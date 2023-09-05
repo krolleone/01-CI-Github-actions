@@ -28,7 +28,8 @@ class ReallyShakyBankingCoreSystemService implements BankingCoreSystmeService {
     @Override
     public void transfer(Transaction tx, String fromAccount, String toAccount) {
         randomizedWait(1000);
-        this will not compile;
+        //this will not compile;
+        //But this will! And I still need Mr. Bendiks approval
         Account from = getOrCreateAccount(fromAccount);
         Account to = getOrCreateAccount(toAccount);
         from.setBalance(from.getBalance().subtract(valueOf(tx.getAmount())));
