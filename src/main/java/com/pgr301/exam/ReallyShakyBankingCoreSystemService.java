@@ -27,8 +27,7 @@ class ReallyShakyBankingCoreSystemService implements BankingCoreSystmeService {
 
     @Override
     public void transfer(Transaction tx, String fromAccount, String toAccount) {
-        randomizedWait(2000);
-        randomizeExceptionOrPanic(0.7f);
+        randomizedWait(1000);
         Account from = getOrCreateAccount(fromAccount);
         Account to = getOrCreateAccount(toAccount);
         from.setBalance(from.getBalance().subtract(valueOf(tx.getAmount())));
@@ -37,8 +36,7 @@ class ReallyShakyBankingCoreSystemService implements BankingCoreSystmeService {
 
     @Override
     public Account updateAccount(Account a) {
-        randomizedWait(2000);
-        randomizeExceptionOrPanic(0.9f);
+        randomizedWait(1000);
         Account account = getOrCreateAccount(a.getId());
         account.setBalance(a.getBalance());
         account.setCurrency(a.getCurrency());
@@ -48,16 +46,14 @@ class ReallyShakyBankingCoreSystemService implements BankingCoreSystmeService {
 
     @Override
     public BigDecimal balance(@PathVariable String accountId) {
-        randomizedWait(10000);
-        randomizeExceptionOrPanic(0.2f);
+        randomizedWait(1000);
         Account account = ofNullable(theBank.get(accountId)).orElseThrow(BankAccountController.AccountNotFoundException::new);
         return account.getBalance();
     }
 
     @Override
     public Account getAccount(String accountNumber) {
-        randomizedWait(5000);
-        randomizeExceptionOrPanic(0.9f, 0.5f);
+        randomizedWait(1000);
         return getOrCreateAccount(accountNumber);
     }
 
@@ -68,19 +64,6 @@ class ReallyShakyBankingCoreSystemService implements BankingCoreSystmeService {
             theBank.put(accountId, a);
         }
         return theBank.get(accountId);
-    }
-
-    private void randomizeExceptionOrPanic(double probability) {
-        randomizeExceptionOrPanic(probability, 0.2d);
-    }
-
-    private void randomizeExceptionOrPanic(double probability, double panicProbability) {
-        if (Math.random() <= probability) {
-            throw new BackEndException();
-        }
-        if (Math.random() <= panicProbability) {
-            System.exit(-1);
-        }
     }
 
 
